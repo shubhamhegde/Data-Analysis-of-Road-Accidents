@@ -19,13 +19,19 @@ Plotted variables:
 
 Observations:
 	1. Most accidents(75.5%) occur on Single carriageway roads
-	2. About 82.8% of accidents occur during fine weather conditions.
-	3. 69.1%  of accidents occur on dry roads, and 27.7% occur on wet or damp roads.
+	2. Quite surprisingly, About 82.8% of accidents occur during fine weather conditions followed by rainy weather
+	3. Quite surprisingly, 69.1%  of accidents occur on dry roads, and 27.7% occur on wet or damp roads.
 	4. Most accidents(54.7%) occur when driver is going ahead, followed by turning right(12.3%) and waiting to go(8.21%).
 	5. A majority(60.9%) of accidents occur at speed of 30kmph, followed by 60kmph(16%).
 	6. A lot of accidents(73.7%) occur during daylight, followed by  darkness with lights(19.2%).
 	7. Histogram of age of vehicles (0-30) resembles a positive skew, with a majority of vehicles within range 0-12.
 	8. We see that most accidents(70.1%) occur at T or staggered junctions(33.2%) or not at junctions(36.9).
 	9. About 51.7% of accidents had front as 1st point of contact.
-	10. The histogram of hour of day if approximately bimodal, with peaks at 8:00AM - 9:00AM and 4:00PM - 6:00PM.
-	11. Histogram of Engine_CC describes a bimodal distribution, with peaks at 1500cc and 2000cc.
+	10.The histogram of hour of day if approximately bimodal, with peaks at 8:00AM - 9:00AM and 4:00PM - 6:00PM which is expected because it is the time people commute to work. Accidents are more 	likely to be fatal or serious when they occur in the late evening and in the night, even if the frequency of accidents is obviously much lower than the rest of the day.
+	11.Histogram of Engine_CC describes a bimodal distribution, with peaks at 1500cc and 2000cc.
+	12.No visible high correlation among the variables. However the variables are not entirely quantitative. Rather they are categorical data encoded.
+	13.Ford and Vauxhall have a high frequency of accidents. Probably one of the reasons why the less known vehicle makes ("Other") are involved in a relatively higher number of accidents is that 	these vehicles have lower safety systems in place in order to cut the costs of the vehicles and make their prices more attractive to the potential customers.
+	14.The age_of_driver category involved the most in road accidents is "26-35" (3), even though the predominant age group in UK is 50-54.
+	15.More petrol vehicles undergo accident as more number of petrol vehicles is used generally. 
+	16.Spring (1) and Summer (2) and autumn(3) are the seasons when more accidents occurwhile Winter (4) is the season with the lowest frequency of accidents.Hence, More accidents have occurred 		between March and november.
+
