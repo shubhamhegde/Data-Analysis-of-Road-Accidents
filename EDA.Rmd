@@ -1,0 +1,204 @@
+```{r}
+library(sqldf)
+library(plotly)
+library(ggplot2)
+library(dplyr)
+library(lubridate)
+library(forcats)
+library(gridExtra)
+library(corrplot)
+
+
+data <- read.csv("C:/Users/shubh/Downloads/adm-project-road-accidents-in-uk/Accidents_categorical.csv");
+data
+```
+
+```{r}
+quantitative <- subset(data, select=c('Driver_IMD_Decile', 'Speed_limit', 'Year', 'Season', 'Month_of_Year','Day_of_Month', 'Day_of_Week', 'Hour_of_Day', 'Number_of_Vehicles','Age_of_Driver', 'Age_of_Vehicle', 'Engine_CC'))
+c <- cor(quantitative)
+corrplot(c,method="circle", )
+#No visible high correlation among the variables. However the variables are not entirely quantitative. Rather they are categorical data encoded.
+```
+
+
+```{r}
+test <- fn$sqldf("SELECT COUNT(*) AS COUNT, Road_type FROM data GROUP BY Road_Type");
+plot_ly(test, labels = ~Road_Type, values = ~COUNT, type = 'pie') %>%
+  layout(title = 'Type of roads in Accidents');
+#Most accidents(75.5%) occur on Single carriageway roads  
+```
+
+```{r}
+test <- fn$sqldf("SELECT COUNT(*) AS COUNT, Weather FROM data GROUP BY Weather");
+plot_ly(test, labels = ~Weather, values = ~COUNT, type = 'pie') %>%
+  layout(title = 'Type of weather during Accidents');
+#Quite surprisingly, About 82.8% of accidents occur during fine weather conditions followed by rainy weather
+```
+
+```{r}
+test <- fn$sqldf("SELECT COUNT(*) AS COUNT, Road_Surface_Conditions FROM data GROUP BY Road_Surface_Conditions");
+plot_ly(test, labels = ~Road_Surface_Conditions, values = ~COUNT, type = 'pie') %>%
+  layout(title = 'Type of road surfaces during Accidents');
+#Quite surprisingly, 69.1%  of accidents occur on dry roads, and 27.7% occur on wet or damp roads.  
+```
+
+```{r}
+test <- fn$sqldf("SELECT COUNT(*) AS COUNT, Vehicle_Make FROM data GROUP BY Vehicle_Make");
+plot_ly(test, labels = ~Vehicle_Make, values = ~COUNT, type = 'pie') %>%
+  layout(title = 'Vehicle make involved in Accidents');
+#Ford and Vauxhall have a high frequency of accidents. Probably one of the reasons why the less known vehicle makes ("Other") are involved in a relatively higher number of accidents is that these vehicles have lower safety systems in place in order to cut the costs of the vehicles and make their prices more attractive to the potential customers.
+```
+
+```{r}
+test <- fn$sqldf("SELECT COUNT(*) AS COUNT, Region FROM data GROUP BY Region");
+plot_ly(test, labels = ~Region, values = ~COUNT, type = 'pie') %>%
+  layout(title = 'Regions of Accidents');
+```
+
+```{r}
+test <- fn$sqldf("SELECT COUNT(*) AS COUNT, Vehicle_Manoeuvre FROM data GROUP BY Vehicle_Manoeuvre");
+plot_ly(test, labels = ~Vehicle_Manoeuvre, values = ~COUNT, type = 'pie') %>%
+  layout(title = 'Vehicle_Manoeuvre of Accidents');
+#Most accidents(54.7%) occur when driver is going ahead, followed by turning right(12.3%) and waiting to go(8.21%). 
+```
+
+```{r}
+test <- fn$sqldf("SELECT COUNT(*) AS COUNT, Speed_limit FROM data GROUP BY Speed_limit");
+plot_ly(test, labels = ~Speed_limit, values = ~COUNT, type = 'pie') %>%
+  layout(title = 'Speed Limits of roads involved in Accidents');
+# A majority(60.9%) of accidents occur at speed of 30kmph, followed by 60kmph(16%).  
+```
+
+```{r}
+test <- fn$sqldf("SELECT COUNT(*) AS COUNT, High_Wind FROM data GROUP BY High_Wind");
+plot_ly(test, labels = ~High_Wind, values = ~COUNT, type = 'pie') %>%
+  layout(title = 'High Wind during Accidents');
+#More accidents not during high winds. 
+```
+
+```{r}  
+test <- fn$sqldf("SELECT COUNT(*) AS COUNT, Lights FROM data GROUP BY Lights");
+plot_ly(test, labels = ~Lights, values = ~COUNT, type = 'pie') %>%
+  layout(title = 'Lights during Accidents');
+# A lot of accidents(73.7%) occur during daylight, followed by  darkness with lights(19.2%).
+```
+
+```{r}  
+test <- fn$sqldf("SELECT COUNT(*) AS COUNT, Age_of_Driver FROM data GROUP BY Age_of_Driver");
+plot_ly(test, labels = ~Age_of_Driver, values = ~COUNT, type = 'pie') %>%
+  layout(title = 'Age of the Driver of Accidents');
+#The age_of_driver category involved the most in road accidents is "26-35" (3), even though the predominant age group in UK is 50-54.
+```
+
+```{r}
+
+test <- fn$sqldf("SELECT COUNT(*) AS COUNT, Age_of_Vehicle FROM data GROUP BY Age_of_Vehicle");
+plot_ly(test, x = ~Age_of_Vehicle, y = ~COUNT, type = 'bar') %>%
+  layout(title = 'Age of the Vehicle of Accidents');
+#Histogram of age of vehicles (0-30) resembles a positive skew, with a majority of vehicles within range 0-12.
+```
+
+```{r}
+
+test <- fn$sqldf("SELECT COUNT(*) AS COUNT, Junction_Detail as Junction FROM data GROUP BY Junction");
+plot_ly(test, labels = ~Junction, values = ~COUNT, type = 'pie') %>%
+  layout(title = 'Junction involved in Accidents');
+#We see that most accidents(70.1%) occur at T or staggered junctions(33.2%) or not at junctions(36.9).
+```
+
+```{r}
+test <- fn$sqldf("SELECT COUNT(*) AS COUNT, X1st_Point_of_Impact FROM data GROUP BY X1st_Point_of_Impact");
+plot_ly(test, labels = ~X1st_Point_of_Impact, values = ~COUNT, type = 'pie') %>%
+  layout(title = '1st point of contact in Accidents');
+#About 51.7% of accidents had front as 1st point of contact.
+```
+
+```{r}
+
+test <- fn$sqldf("SELECT COUNT(*) AS COUNT, Propulsion_Code FROM data GROUP BY Propulsion_Code");
+plot_ly(test, labels = ~Propulsion_Code, values = ~COUNT, type = 'pie') %>%
+  layout(title = 'Propulsion code of vehicle in Accidents');
+#More petrol vehicles undergo accident as more number of petrol vehicles is used generally.  
+```
+
+```{r}
+
+test1 <- sqldf("SELECT COUNT(*) AS Count, Month_of_Year as Month FROM data GROUP BY Month_of_Year");
+plot_ly(test1, x = ~Month, y = ~Count, type = 'bar') %>%
+  layout(title = 'Accidents in each month')
+```
+
+```{r}
+unique(data$Year)
+
+```
+
+.
+```{r}
+
+
+test <- fn$sqldf("SELECT COUNT(*) AS COUNT, Driver_Journey_Purpose FROM data GROUP BY Driver_Journey_Purpose");
+plot_ly(test, labels = ~Driver_Journey_Purpose, values = ~COUNT, type = 'pie') %>%
+  layout(title = "Driver's journey purpose in Accidents");
+#The data related to purpose of commute during accident is unknown  
+```
+
+
+```{r}
+test <- fn$sqldf("SELECT COUNT(*) AS COUNT, Accident_Severity FROM data GROUP BY Accident_Severity");
+plot_ly(test, labels = ~Accident_Severity, values = ~COUNT, type = 'pie') %>%
+  layout(title = "Severity of Accident");
+#frequency of slight accidents is obviously more than fatal ones as expected.
+
+```
+
+```{r}
+hist(data$Engine_CC, breaks = 25)
+#Histogram of Engine_CC describes a bimodal distribution, with peaks at 1500cc and 2000cc.
+```
+```{r}
+plot_ly(alpha = 0.6) %>%
+  add_histogram(x=~data[data$Accident_Severity == "Slight", ]$Hour_of_Day, histnorm="probability", name="Slight", nbinsx=100) %>%
+  add_histogram(x=~data[data$Accident_Severity == "Fatal_Serious", ]$Hour_of_Day, histnorm="probability", name="Fatal-Serious", nbinsx=100) %>%
+  layout(barmode="overlay", title="Hour of Day comparison", xaxis=list(title="Hour of Day"))
+# The histogram of hour of day if approximately bimodal, with peaks at 8:00AM - 9:00AM and 4:00PM - 6:00PM which is expected because it is the time people commute to work. Accidents are more likely to be fatal or serious when they occur in the late evening and in the night, even if the frequenceof accidents is obviously much lower than the rest of the day.
+```
+```{r}
+# All Accidents
+p1 <- select(data, one_of(c("Accident_Index", "Datetime", "Accident_Severity"))) %>%
+  mutate(dhour = format(strptime(Datetime,"%Y-%m-%d %H:%M:%S"),'%H'),
+         wday = wday(Datetime, label=TRUE)) %>%
+  mutate(wday = fct_relevel(wday, c("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"))) %>%
+  group_by(dhour, wday) %>%
+  summarise(accidents_count = n_distinct(Accident_Index))  %>%
+  ggplot(aes(dhour, wday, fill=accidents_count)) +
+  geom_tile() +
+  coord_fixed() +
+  labs(x="Hour of Day", y="Day of Week") +
+  scale_fill_distiller(palette="Spectral", name="Accidents Count") +
+  ggtitle("Accidents") 
+grid.arrange(p1, ncol=1)
+#more accidents occur during 8:00AM - 9:00AM and 4:00PM - 6:00PM, since drivers go to work/school at this time as already seen.
+```
+
+```{r}
+hist(data$Season)
+#Spring (1) and Summer (2) and autumn(3) are the seasons when more accidents occurwhile Winter (4) is the season with the lowest frequency of accidents
+```
+
+```{r}
+# All Accidents
+p1 <- select(data, one_of(c("Accident_Index", "Datetime", "Accident_Severity"))) %>%
+  mutate(nyear = format(strptime(Datetime,"%Y-%m-%d %H:%M:%S"),'%Y'),
+         month = month(Datetime, label=TRUE)) %>%
+  group_by(nyear, month) %>%
+  summarise(accidents_count = n_distinct(Accident_Index))  %>%
+  ggplot(aes(month, nyear, fill=accidents_count)) +
+  geom_tile() +
+  coord_fixed( ) +
+  labs(x="Month of Year", y="Year in Period") +
+  scale_fill_distiller(palette="Spectral", name="Accidents Count") +
+  ggtitle("All Accidents")
+grid.arrange(p1, ncol=1)
+#More accidents have occurred between March and november. This is exactly as seen in season accidents frequency histogram.
+```
